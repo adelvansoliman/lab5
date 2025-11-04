@@ -1,0 +1,39 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity fsm_comb is
+  port (
+    state          : in  std_logic_vector(2 downto 0);
+    bag_present    : in  std_logic;
+    suspicious_item: in  std_logic;
+    next_state     : out std_logic_vector(2 downto 0);
+    load_next_bag  : out std_logic;
+    xray_enable    : out std_logic;
+    redirect_bag   : out std_logic;
+    unload_bag     : out std_logic
+  );
+end entity;
+
+architecture rtl of fsm_comb is
+begin
+  process(state, bag_present, suspicious_item)
+  begin
+    -- default outputs
+    next_state     <= state;
+    load_next_bag  <= '0';
+    xray_enable    <= '0';
+    redirect_bag   <= '0';
+    unload_bag     <= '0';
+
+    -- CASE structure (you fill these according to your ASM)
+    case state is
+      when "000" => -- Idle
+        if bag_present = '0' then
+          next_state <= "001";
+        end if;
+      when others =>
+        next_state <= (others => '0');
+    end case;
+  end process;
+end rtl;
